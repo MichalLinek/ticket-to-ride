@@ -1,0 +1,22 @@
+
+.player-cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-row {
+  display: flex;
+  flex-direction: row;
+  flex: 50%;
+}
+
+.card-image {
+  width: 150px;
+  height: 100px;
+  padding: 10px;
+}
+
+.card-counter {
+  display: flex;
+  align-items: center;
+}

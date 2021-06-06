@@ -1,0 +1,25 @@
+.app {
+  text-align: center;
+}
+
+.message-placeholder {
+  height: 100px;
+  background-color: black;
+  color: white;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+.two-column-layout {
+  display: flex;
+  flex-direction: row;
+}
+
+.half-width {
+  width: 50%;
+}

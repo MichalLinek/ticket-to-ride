@@ -1,0 +1,13 @@
+.map-area-size {
+  background-color: black;
+  margin: 0 auto;
+  height: 600px;
+  width: 800px;
+}
+
+.play-area {
+  margin: 50px;
+  position: relative;
+  width: calc(100% - 100px);
+  height: calc(100% - 100px);
+}

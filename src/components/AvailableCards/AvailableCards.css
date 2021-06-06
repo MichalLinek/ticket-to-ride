@@ -1,0 +1,21 @@
+
+.available-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  width: 150px;
+  height: 100px;
+  padding: 10px;
+}
+
+.available-card-row {
+  display: flex;
+  justify-content: center;;
+}
+
+.card-counter {
+  display: flex;
+  align-items: center;
+}
