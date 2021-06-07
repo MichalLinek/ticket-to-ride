@@ -1,15 +1,9 @@
 import "./Dashboard.css";
 import React from 'react';
+import {connect} from 'react-redux'
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // this.state = {
-    //   hand: hand
-    // }
-  }
-
+  
   render() {
     return (
       <div>
@@ -26,4 +20,9 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  return {
+    hand: state.reducers.hand
+  };
+};
+export default connect(mapStateToProps)(Dashboard);

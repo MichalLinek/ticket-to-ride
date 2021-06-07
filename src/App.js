@@ -7,35 +7,20 @@ import Dashboard from './components/Dashboard/Dashboard';
 import AvailableCards from "./components/AvailableCards/AvailableCards";
 import { CardEnum } from "./models/const/card-enum";
 import { map } from './maps/map1';
+import store from './store'
+import {connect} from 'react-redux'
+import * as actions from "./actions/my-action";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     const deckCard = new CardDeck();
     const currentMap = map;
-    deckCard.initialize();
-    let hand = {}
-    hand[CardEnum.LOCOMOTIVE] = 0;
-    hand[CardEnum.PINK] = 0;
-    hand[CardEnum.ORANGE] = 0;
-    hand[CardEnum.YELLOW] = 0;
-    hand[CardEnum.GREEN] = 0;
-    hand[CardEnum.BLACK] = 0;
-    hand[CardEnum.BLUE] = 0;
-    hand[CardEnum.RED] = 0;
-    hand[CardEnum.WHITE] = 0;
+    store.dispatch(actions.shuffleCards(deckCard.shuffle(this.props.cards)));
 
     this.state = {
-      deckCard: deckCard,
-      hand: hand,
       map: currentMap
     }
-  }
-
-  takeCard = (x) => {
-    this.state.hand[x] += 1;
-    let hand = {...this.state.hand};
-    this.setState( { hand });
   }
 
   render() {
@@ -46,10 +31,10 @@ class App extends React.Component {
           <Map map={this.state.map}></Map>
           <div className="two-column-layout">
             <div className="half-width">
-              <Dashboard hand={this.state.hand}></Dashboard>
+              <Dashboard hand={this.props.hand}></Dashboard>
             </div>
             <div className="half-width">
-              <AvailableCards onTakeCard={(x) => this.takeCard(x)} cardDeck={this.state.deckCard}></AvailableCards>
+              <AvailableCards></AvailableCards>
             </div>
           </div>
         </div>
@@ -58,4 +43,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    cards: state.reducers.trainDeck,
+    hand: state.reducers.hand
+  };
+};
+
+export default connect(mapStateToProps)(App);

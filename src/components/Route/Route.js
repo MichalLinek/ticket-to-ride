@@ -3,9 +3,6 @@ import React from 'react';
 import TrainSpot from "../TrainSpot/TrainSpot";
 
 class Route extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   claimRoute = () => {
     console.log('Claiming Route ' + this.props.route.routeId);
   }
