@@ -1,6 +1,7 @@
 import * as actions from '../actions/my-action';
 import { CardEnum } from "./../models/const/card-enum";
 import { map } from '../setup/map1';
+import { tickets} from "../setup/map1";
 
 let hand = {}
 hand[CardEnum.LOCOMOTIVE] = 0;
@@ -26,8 +27,10 @@ export const initialState = {
         ...Array(12).fill(CardEnum.GREEN)
     ],
     hand: hand,
+    ticketHand: [],
     messageInfo: "START GAME",
-    map    
+    map,
+    tickets
 }
 
 
@@ -91,6 +94,25 @@ export default function myReducer(state = initialState, action) {
                 hand[route.trainSpots[i].color] -= 1;
             }
             return {...state, map, messageInfo, hand };
+        }
+        case actions.TAKE_TICKETS: {
+            let tickets = [...state.tickets];
+            let takenTickets = action.data.takenTickets;
+
+            let t = tickets.splice(0, 3);
+
+            let ticketHand = [...state.ticketHand];
+
+            for (let i = 0 ; i < 3; i ++) {
+                if (takenTickets[i]) {
+                    ticketHand.push(t[i]);
+                }
+                else {
+                    if (t[i])
+                        tickets.push(t[i]);
+                }
+            }
+            return {...state, tickets, ticketHand, messageInfo: 'Player claimed tickets' };
         }
             
       default:

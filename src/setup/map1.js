@@ -3,11 +3,13 @@ import { CardEnum } from "../models/const/card-enum";
 export const tickets = [
     
     {
+        id: 1,
         cityAId: 3,
         cityBId: 1,
         points: 200
     },
     {
+        id:2,
         cityAId: 0,
         cityBId: 3,
         points: 15

@@ -16,7 +16,6 @@ class Dashboard extends React.Component {
             const path = "./" + x + ".png";
             return <div key={x} className="card-row"><img className="card-image" src={path}></img><div className="card-counter"> x {this.props.hand[x]}</div></div>
           })}
-          <Ticket ticket={tickets[0]}></Ticket>
         </div>
       </div>
     );

@@ -2,6 +2,7 @@ export const SHUFFLE_CARDS = 'SHUFFLE_CARDS'
 export const TAKE_CARD = 'TAKE_CARD'
 export const TAKE_RANDOM_CARDS = 'TAKE_RANDOM_CARDS'
 export const CLAIM_ROUTE = 'CLAIM_ROUTE'
+export const TAKE_TICKETS = 'TAKE_TICKETS';
 
 export const claimRoute = (data) => ({
   type: CLAIM_ROUTE,
@@ -20,4 +21,9 @@ export const takeCard = (cardId) => ({
 
 export const takeRandomCards = () => ({
   type: TAKE_RANDOM_CARDS,
+})
+
+export const takeTickets = (data) => ({
+  type: TAKE_TICKETS,
+  data
 })
