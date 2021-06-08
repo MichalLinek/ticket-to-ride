@@ -46,3 +46,10 @@
 .yellow-train {
   background-color: yellow;
 }
+
+.occupied {
+  height: 15px;
+  width: 40px;
+  margin: auto;
+  border-radius: 5px;
+}

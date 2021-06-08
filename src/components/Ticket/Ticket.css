@@ -1,0 +1,31 @@
+.ticket-container {
+  width: 200px;
+  height: 160px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: brown;
+}
+
+.ticket {
+  width: 160px;
+  height: 120px;
+  margin: auto;
+  position: relative;
+}
+
+.ti {
+  height: 600px;
+  width: 800px;
+  transform: scale(0.2);
+  transform-origin: left top;
+  position: absolute;
+}
+
+.ticket-labels {
+  position: absolute;
+  top: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    width: 100%;
+}

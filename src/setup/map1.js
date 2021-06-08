@@ -1,5 +1,19 @@
 import { CardEnum } from "../models/const/card-enum";
 
+export const tickets = [
+    
+    {
+        cityAId: 3,
+        cityBId: 1,
+        points: 200
+    },
+    {
+        cityAId: 0,
+        cityBId: 3,
+        points: 15
+    }
+];
+
 export const map = {
     background: "poland.png",
     cities: [

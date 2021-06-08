@@ -19,3 +19,8 @@
   display: flex;
   align-items: center;
 }
+
+.two-columns {
+  display: flex;
+  flex-direction: row;
+}

@@ -9,17 +9,26 @@ class AvailableCards extends React.Component {
     store.dispatch(actions.takeCard(id));
   }
 
+  takeRandomCards = () => {
+    store.dispatch(actions.takeRandomCards());
+  }
+
   render() {
     return (
       <div>
         <div>Available Cards</div>
-        <div><button>Tu będzie rewers karty (2 z wierzchu)</button></div>
-        <div className="available-cards">
-          { this.props.cards.slice(0, 5).map((x, id) => {
-            
-            const path = `./${x}.png`;
-            return <div key={id} className="available-card-row"><img onClick={() => this.takeCard(id)} className="card-image" src={path}></img></div>
-          })}
+        <div class="two-columns">
+          <div className="available-cards">
+            { this.props.cards.slice(0, 5).map((x, id) => {
+              
+              const path = `./${x}.png`;
+              return <div key={id} className="available-card-row"><img onClick={() => this.takeCard(id)} className="card-image" src={path}></img></div>
+            })}
+          </div>
+          <div className="available-cards">
+            <div><img onClick={() => this.takeRandomCards()} className="card-image" src={"./card-reverse.png"}></img></div>
+            <div><img onClick={() => this.takeTickets()} className="card-image" src={"./ticket.png"}></img></div>
+          </div>
         </div>
       </div>
     );
