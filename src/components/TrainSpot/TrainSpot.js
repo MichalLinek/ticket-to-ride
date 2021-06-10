@@ -5,7 +5,6 @@ import { players } from "./../../setup/players";
 class TrainSpot extends React.Component {
   constructor(props) {
     super(props);
-
     this.cssClasses = `train ${this.props.color}`;
   }
 

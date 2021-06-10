@@ -5,15 +5,14 @@ import store from './../../store';
 import * as actions from "./../../actions/my-action";
 import {connect} from 'react-redux'
 import { players } from "../../setup/players";
+import { PlayerType } from "../../models/const/player-type";
 
 class Route extends React.Component {
   claimRoute = () => {
-    if (this.props.route.occupied === undefined && this.checkRequiredCards()) {
-      console.log('Claiming Route ' + this.props.route.routeId);
+    if ((this.props.players[this.props.activePlayerId].type === PlayerType.HUMAN) &&
+    this.props.route.occupied === undefined && this.checkRequiredCards())
+     {
       store.dispatch(actions.claimRoute({ routeId: this.props.route.routeId, playerId: players[0].id}));
-    }
-    else {
-
     }
   }
 
@@ -28,8 +27,9 @@ class Route extends React.Component {
       aggregatedCards[requiredCards[i].color] += 1;
     }
 
+    let hand = this.props.players[this.props.activePlayerId].trainCards;
     for (let card of Object.keys(aggregatedCards)) {
-      if (this.props.hand[card] < aggregatedCards[card]) {
+      if (hand[card] < aggregatedCards[card]) {
         return false;
       }
     }
@@ -50,7 +50,9 @@ class Route extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    hand: state.reducers.hand
+    hand: state.reducers.hand,
+    activePlayerId: state.reducers.activePlayerId,
+    players: state.reducers.players
   };
 };
 

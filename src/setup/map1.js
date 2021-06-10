@@ -149,6 +149,204 @@ export const map = {
                     angle: 124
                 },
             ]
+        },
+        {
+            routeId: 3,
+            cityA: 4,
+            cityB: 5,
+            trainSpots: [
+                {
+                    color: CardEnum.ORANGE,
+                    x: 310,
+                    y: 484,
+                    angle: 0
+                },
+                {
+                    color: CardEnum.ORANGE,
+                    x: 258,
+                    y: 480,
+                    angle: 12
+                },
+                {
+                    color: CardEnum.ORANGE,
+                    x: 209,
+                    y: 464,
+                    angle: 28
+                },
+                {
+                    color: CardEnum.ORANGE,
+                    x: 165,
+                    y: 435,
+                    angle: 41
+                },
+                {
+                    color: CardEnum.ORANGE,
+                    x: 130,
+                    y: 395,
+                    angle: 54
+                }
+            ]
+        },
+        {
+            routeId: 4,
+            cityA: 3,
+            cityB: 5,
+            trainSpots: [
+                {
+                    color: CardEnum.BLACK,
+                    x: 89,
+                    y: 336,
+                    angle: 54
+                },
+                {
+                    color: CardEnum.BLACK,
+                    x: 73,
+                    y: 285,
+                    angle: 90
+                },
+                {
+                    color: CardEnum.BLACK,
+                    x: 83,
+                    y: 233,
+                    angle: 113
+                }
+            ]
+        },
+        {
+            routeId: 5,
+            cityA: 0,
+            cityB: 4,
+            trainSpots: [
+                {
+                    color: CardEnum.WHITE,
+                    x: 382,
+                    y: 498,
+                    angle: 20
+                },
+                {
+                    color: CardEnum.WHITE,
+                    x: 436,
+                    y: 508,
+                    angle: 0
+                },
+                {
+                    color: CardEnum.WHITE,
+                    x: 486,
+                    y: 497,
+                    angle: 334
+                },
+                {
+                    color: CardEnum.WHITE,
+                    x: 525,
+                    y: 461,
+                    angle: 307
+                }
+            ]
+        },
+        {
+            routeId: 6,
+            cityA: 2,
+            cityB: 5,
+            trainSpots: [
+                {
+                    color: CardEnum.BLUE,
+                    x: 145,
+                    y: 364,
+                    angle: 0
+                },
+                {
+                    color: CardEnum.BLUE,
+                    x: 197,
+                    y: 354,
+                    angle: 337
+                },
+                {
+                    color: CardEnum.BLUE,
+                    x: 242,
+                    y: 329,
+                    angle: -37
+                },
+                {
+                    color: CardEnum.BLUE,
+                    x: 314,
+                    y: 253,
+                    angle: 304
+                },
+                {
+                    color: CardEnum.BLUE,
+                    x: 282,
+                    y: 294,
+                    angle: 314
+                }   
+            ]
+        },
+        {
+            routeId: 7,
+            cityA: 1,
+            cityB: 4,
+            trainSpots: [
+                {
+                    color: CardEnum.PINK,
+                    x: 427,
+                    y: 449,
+                    angle: -38
+                },
+                {
+                    color: CardEnum.PINK,
+                    x: 477,
+                    y: 357,
+                    angle: 99
+                },
+                {
+                    color: CardEnum.PINK,
+                    x: 460,
+                    y: 408,
+                    angle: 296
+                },
+                {
+                    color: CardEnum.PINK,
+                    x: 381,
+                    y: 473,
+                    angle: 343
+                }   
+            ]
+        },
+        {
+            routeId: 8,
+            cityA: 2,
+            cityB: 4,
+            trainSpots: [
+                {
+                    color: CardEnum.YELLOW,
+                    x: 363,
+                    y: 250,
+                    angle: 47
+                },
+                {
+                    color: CardEnum.YELLOW,
+                    x: 386,
+                    y: 300,
+                    angle: 85
+                },
+                {
+                    color: CardEnum.YELLOW,
+                    x: 377,
+                    y: 354,
+                    angle: 121
+                },
+                {
+                    color: CardEnum.YELLOW,
+                    x: 352,
+                    y: 398,
+                    angle: 115
+                },
+                {
+                    color: CardEnum.YELLOW,
+                    x: 344,
+                    y: 450,
+                    angle: 84
+                }   
+            ]
         }
     ]
 }

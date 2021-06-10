@@ -2,37 +2,21 @@ import * as actions from '../actions/my-action';
 import { CardEnum } from "./../models/const/card-enum";
 import { map } from '../setup/map1';
 import { tickets} from "../setup/map1";
+import { players} from "../setup/players";
+import { pointsForRoutes } from "../setup/pointsForRoutes";
+import { allCards } from "../setup/ticketCards";
 
-let hand = {}
-hand[CardEnum.LOCOMOTIVE] = 0;
-hand[CardEnum.PINK] = 0;
-hand[CardEnum.ORANGE] = 0;
-hand[CardEnum.YELLOW] = 0;
-hand[CardEnum.GREEN] = 0;
-hand[CardEnum.BLACK] = 0;
-hand[CardEnum.BLUE] = 0;
-hand[CardEnum.RED] = 0;
-hand[CardEnum.WHITE] = 0;
-
-export const initialState = {
-    trainDeck: [
-        ...Array(14).fill(CardEnum.LOCOMOTIVE),
-        ...Array(12).fill(CardEnum.ORANGE),
-        ...Array(12).fill(CardEnum.PINK),
-        ...Array(12).fill(CardEnum.RED),
-        ...Array(12).fill(CardEnum.WHITE),
-        ...Array(12).fill(CardEnum.YELLOW),
-        ...Array(12).fill(CardEnum.BLACK),
-        ...Array(12).fill(CardEnum.BLUE),
-        ...Array(12).fill(CardEnum.GREEN)
-    ],
-    hand: hand,
+const initialState = {
+    trainDeck: allCards,
     ticketHand: [],
     messageInfo: "START GAME",
     map,
-    tickets
+    tickets,
+    players,
+    activePlayerId: 0,
+    animation: null,
+    id: 0
 }
-
 
 let shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -47,41 +31,58 @@ export default function myReducer(state = initialState, action) {
     switch (action.type) {
         case actions.SHUFFLE_CARDS: {
             let cards = shuffle([...state.trainDeck]);
-            return {...state, trainDeck: cards }
+            return {...state, trainDeck: cards, id: state.id + 1 }
         }
         case actions.TAKE_CARD: {
-            let hand = {...state.hand}
+            let players = [...state.players];
             let trainDeck = [...state.trainDeck];
             let nextCard = trainDeck.splice(5, 1);
             let card = trainDeck.splice(action.data, 1, nextCard);
-            hand[card] += 1
-            return {...state, hand, trainDeck, messageInfo: `Player takes ${card}` }
+            players[state.activePlayerId].trainCards[card] += 1
+            
+            let animation = {
+                type: actions.TAKE_CARD,
+                card1: action.data                                
+            }
+            let activePlayerId = (state.activePlayerId + 1) % players.length;
+
+        
+            return {...state, players, trainDeck, messageInfo: `Player takes ${card}`, activePlayerId, animation, id: state.id + 1 }
         }
         case actions.TAKE_RANDOM_CARDS: {
-            let hand = {...state.hand}
+            let players = [...state.players];
             let newTrainDeckState = [...state.trainDeck];
             let msg = "";
+            let animation = {};
             if (newTrainDeckState[5] == CardEnum.LOCOMOTIVE) {
-                hand[CardEnum.LOCOMOTIVE] += 1
-                newTrainDeckState.splice(5, 1);
+                players[state.activePlayerId].trainCards[CardEnum.LOCOMOTIVE] += 1
+                let cards = newTrainDeckState.splice(5, 1);
                 msg = "Player got Locomotive";
+                animation = {
+                    type: actions.TAKE_RANDOM_CARDS,
+                    cards                                
+                }
             }
             else {
                 let cards = newTrainDeckState.splice(5, 2);
-                hand[cards[0]] += 1;
-                hand[cards[1]] += 1;
+                players[state.activePlayerId].trainCards[cards[0]] += 1;
+                players[state.activePlayerId].trainCards[cards[1]] += 1;
                 msg = `Player got ${cards[0]} and second card`;
-
+                animation = {
+                    type: actions.TAKE_RANDOM_CARDS,
+                    cards                           
+                }
             }
 
-            return {...state, trainDeck: newTrainDeckState, messageInfo: msg, hand };
+            let activePlayerId = (state.activePlayerId + 1) % players.length;
+            return {...state, trainDeck: newTrainDeckState, messageInfo: msg, players, activePlayerId, id: state.id + 1, animation };
         }
         case actions.CLAIM_ROUTE: {
             console.log("CLAIMING ROUTE" + action.data);
             let map = {...state.map};
             let route = map.routes.find(x => x.routeId == action.data.routeId);
             if (!route.occupiedByPlayerId) {
-                route.occupiedByPlayerId = action.data.playerId;
+                route.occupiedByPlayerId = state.activePlayerId;
             }
 
             let cityIds = [route.cityA, route.cityB];
@@ -89,11 +90,17 @@ export default function myReducer(state = initialState, action) {
             let cityB = map.cities[cityIds[1]]; 
             let messageInfo = `Player claimed route ${cityA.name} and ${cityB.name}`;
 
-            let hand = {...state.hand};
+            let players = [...state.players];
             for (let i = 0 ; i < route.trainSpots.length; i++ ) {
-                hand[route.trainSpots[i].color] -= 1;
+                players[state.activePlayerId].trainCards[route.trainSpots[i].color] -= 1;
             }
-            return {...state, map, messageInfo, hand };
+
+            let routeLength = route.trainSpots.length;
+            players[state.activePlayerId].points += pointsForRoutes[routeLength];
+            players[state.activePlayerId].trains -= routeLength;
+
+            let activePlayerId = (state.activePlayerId + 1) % players.length;
+            return {...state, map, messageInfo, players, activePlayerId, id: state.id + 1 };
         }
         case actions.TAKE_TICKETS: {
             let tickets = [...state.tickets];
@@ -112,7 +119,9 @@ export default function myReducer(state = initialState, action) {
                         tickets.push(t[i]);
                 }
             }
-            return {...state, tickets, ticketHand, messageInfo: 'Player claimed tickets' };
+
+            let activePlayerId = (state.activePlayerId + 1) % players.length;
+            return {...state, tickets, ticketHand, messageInfo: 'Player claimed tickets', activePlayerId, id: state.id + 1 };
         }
             
       default:

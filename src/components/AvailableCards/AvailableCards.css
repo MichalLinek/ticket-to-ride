@@ -2,12 +2,16 @@
 .available-cards {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  width: 300px;
 }
 
 .card-image {
   width: 150px;
   height: 100px;
   padding: 10px;
+  position: relative;
+  transition: all .33s ease;
 }
 
 .available-card-row {

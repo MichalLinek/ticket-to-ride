@@ -1,13 +1,15 @@
 
 .player-cards {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  width: 400px;
+  justify-content: center;
 }
 
 .card-row {
   display: flex;
   flex-direction: row;
-  flex: 50%;
 }
 
 .card-image {

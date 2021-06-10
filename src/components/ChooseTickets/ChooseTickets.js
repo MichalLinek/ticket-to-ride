@@ -3,11 +3,6 @@ import React from 'react';
 import Ticket from "../Ticket/Ticket";
 
 class ChooseTickets extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
-
   render() {
     return (
       <div>  

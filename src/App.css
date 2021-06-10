@@ -1,10 +1,8 @@
 .app {
   text-align: center;
-  background-color: #282c34;
 }
 
 .message-placeholder {
-  height: 100px;
   background-color: black;
   color: white;
 }
@@ -23,4 +21,30 @@
 
 .half-width {
   width: 50%;
+}
+
+.player-stats-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.player-stat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.capitalize {
+  text-transform: uppercase;
+}
+
+.three-column-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }

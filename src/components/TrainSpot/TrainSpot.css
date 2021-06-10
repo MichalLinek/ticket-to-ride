@@ -47,6 +47,10 @@
   background-color: yellow;
 }
 
+.blue-train {
+  background-color: blue;
+}
+
 .occupied {
   height: 15px;
   width: 40px;
