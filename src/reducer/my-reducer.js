@@ -8,7 +8,6 @@ import { allCards } from "../setup/ticketCards";
 
 const initialState = {
     trainDeck: allCards,
-    ticketHand: [],
     messageInfo: "START GAME",
     map,
     tickets,
@@ -37,17 +36,29 @@ export default function myReducer(state = initialState, action) {
             let players = [...state.players];
             let trainDeck = [...state.trainDeck];
             let nextCard = trainDeck.splice(5, 1);
-            let card = trainDeck.splice(action.data, 1, nextCard);
-            players[state.activePlayerId].trainCards[card] += 1
-            
+            let cardLength = action.data.length;
+            if (cardLength == 2) {
+                let lowerId = Math.min(action.data[0], action.data[1]);
+                let biggerId = Math.max(action.data[0], action.data[1]);
+                let firstCard = trainDeck.splice(biggerId, 1, nextCard[0]);
+                nextCard = trainDeck.splice(5, 1);
+                let secondCard = trainDeck.splice(lowerId, 1, nextCard[0]);
+                players[state.activePlayerId].trainCards[firstCard] += 1;
+                players[state.activePlayerId].trainCards[secondCard] += 1;
+            } 
+            else {
+                let card = trainDeck.splice(action.data[0], 1, nextCard);
+                players[state.activePlayerId].trainCards[card] += 1
+            }
+
             let animation = {
                 type: actions.TAKE_CARD,
-                card1: action.data                                
+                cards: action.data                                
             }
             let activePlayerId = (state.activePlayerId + 1) % players.length;
 
         
-            return {...state, players, trainDeck, messageInfo: `Player takes ${card}`, activePlayerId, animation, id: state.id + 1 }
+            return {...state, players, trainDeck, activePlayerId, animation, id: state.id + 1 }
         }
         case actions.TAKE_RANDOM_CARDS: {
             let players = [...state.players];
@@ -78,11 +89,10 @@ export default function myReducer(state = initialState, action) {
             return {...state, trainDeck: newTrainDeckState, messageInfo: msg, players, activePlayerId, id: state.id + 1, animation };
         }
         case actions.CLAIM_ROUTE: {
-            console.log("CLAIMING ROUTE" + action.data);
             let map = {...state.map};
             let route = map.routes.find(x => x.routeId == action.data.routeId);
-            if (!route.occupiedByPlayerId) {
-                route.occupiedByPlayerId = state.activePlayerId;
+            if (!route.occupied) {
+                route.occupied = state.activePlayerId;
             }
 
             let cityIds = [route.cityA, route.cityB];
@@ -91,8 +101,9 @@ export default function myReducer(state = initialState, action) {
             let messageInfo = `Player claimed route ${cityA.name} and ${cityB.name}`;
 
             let players = [...state.players];
-            for (let i = 0 ; i < route.trainSpots.length; i++ ) {
-                players[state.activePlayerId].trainCards[route.trainSpots[i].color] -= 1;
+            let cardsUsed = action.data.cardsUsed
+            for (let i = 0 ; i < cardsUsed.length; i++ ) {
+                players[state.activePlayerId].trainCards[cardsUsed[i]] -= 1;
             }
 
             let routeLength = route.trainSpots.length;
@@ -100,19 +111,25 @@ export default function myReducer(state = initialState, action) {
             players[state.activePlayerId].trains -= routeLength;
 
             let activePlayerId = (state.activePlayerId + 1) % players.length;
-            return {...state, map, messageInfo, players, activePlayerId, id: state.id + 1 };
+
+            let animation = {
+                type: actions.CLAIM_ROUTE,
+                cardsUsed: action.data.cardsUsed,
+                routeId: action.data.routeId                               
+            }
+            return {...state, map, messageInfo, players, activePlayerId, id: state.id + 1, animation };
         }
         case actions.TAKE_TICKETS: {
             let tickets = [...state.tickets];
-            let takenTickets = action.data.takenTickets;
+            let ticketIds = action.data;
 
             let t = tickets.splice(0, 3);
 
-            let ticketHand = [...state.ticketHand];
+            let players = [...state.players];
 
-            for (let i = 0 ; i < 3; i ++) {
-                if (takenTickets[i]) {
-                    ticketHand.push(t[i]);
+            for (let i = 0 ; i < t.length; i ++) {
+                if (ticketIds[i]) {
+                    players[state.activePlayerId].ticketCards.push(t[i]);
                 }
                 else {
                     if (t[i])
@@ -120,8 +137,13 @@ export default function myReducer(state = initialState, action) {
                 }
             }
 
+            let animation = {
+                type: actions.TAKE_TICKETS,
+                cards: action.data                                
+            }
+
             let activePlayerId = (state.activePlayerId + 1) % players.length;
-            return {...state, tickets, ticketHand, messageInfo: 'Player claimed tickets', activePlayerId, id: state.id + 1 };
+            return {...state, tickets, players, activePlayerId, id: state.id + 1, animation };
         }
             
       default:

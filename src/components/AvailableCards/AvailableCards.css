@@ -9,14 +9,15 @@
 .card-image {
   width: 150px;
   height: 100px;
-  padding: 10px;
+  margin: 10px;
   position: relative;
-  transition: all .33s ease;
+  transition: all .5s ease;
 }
 
 .available-card-row {
   display: flex;
-  justify-content: center;;
+  justify-content: center;
+  align-items: center;
 }
 
 .card-counter {
@@ -27,4 +28,14 @@
 .two-columns {
   display: flex;
   flex-direction: row;
+}
+
+.card-picked {
+  background-color: red;
+  border-radius: 50%;
+}
+
+.card-selector {
+  width: 20px;
+  height: 20px;
 }

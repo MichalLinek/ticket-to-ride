@@ -1,14 +1,14 @@
 import { CardEnum } from "./../models/const/card-enum";
 let initialHand = {}
-initialHand[CardEnum.LOCOMOTIVE] = 0;
-initialHand[CardEnum.PINK] = 0;
-initialHand[CardEnum.ORANGE] = 0;
-initialHand[CardEnum.YELLOW] = 0;
-initialHand[CardEnum.GREEN] = 0;
-initialHand[CardEnum.BLACK] = 0;
-initialHand[CardEnum.BLUE] = 0;
-initialHand[CardEnum.RED] = 0;
-initialHand[CardEnum.WHITE] = 0;
+initialHand[CardEnum.LOCOMOTIVE] = 10;
+initialHand[CardEnum.PINK] = 10;
+initialHand[CardEnum.ORANGE] = 10;
+initialHand[CardEnum.YELLOW] = 5;
+initialHand[CardEnum.GREEN] = 5;
+initialHand[CardEnum.BLACK] = 5;
+initialHand[CardEnum.BLUE] = 10;
+initialHand[CardEnum.RED] = 10;
+initialHand[CardEnum.WHITE] = 10;
 
 let allCards = [
     ...Array(14).fill(CardEnum.LOCOMOTIVE),

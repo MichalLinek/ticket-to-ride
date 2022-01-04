@@ -4,11 +4,6 @@ import {connect} from 'react-redux'
 import City from "../City/City";
 
 class Ticket extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
-
   render() {
     return (
       <div className="ticket-container"> 
@@ -16,7 +11,6 @@ class Ticket extends React.Component {
           <div className="ti">
         <div style={{ height: "100%", backgroundImage: `url(/${this.props.map.background})` }}>
           { this.props.map.cities.map(x => {
-            
             return [this.props.ticket.cityAId, this.props.ticket.cityBId].indexOf(x.id) > -1 && <City key={x.cityId} name={x.name} top={x.y} left={x.x}></City>
           })}
         );

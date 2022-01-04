@@ -4,15 +4,19 @@ import TrainSpot from "../TrainSpot/TrainSpot";
 import store from './../../store';
 import * as actions from "./../../actions/my-action";
 import {connect} from 'react-redux'
-import { players } from "../../setup/players";
 import { PlayerType } from "../../models/const/player-type";
 
 class Route extends React.Component {
   claimRoute = () => {
+    let requiredCards = this.checkRequiredCards();
     if ((this.props.players[this.props.activePlayerId].type === PlayerType.HUMAN) &&
-    this.props.route.occupied === undefined && this.checkRequiredCards())
+    this.props.route.occupied === undefined && requiredCards)
      {
-      store.dispatch(actions.claimRoute({ routeId: this.props.route.routeId, playerId: players[0].id}));
+      store.dispatch(actions.claimRoute({
+        routeId: this.props.route.routeId,
+        playerId: this.props.activePlayerId,
+        cardsUsed: requiredCards
+      }));
     }
   }
 
@@ -27,21 +31,20 @@ class Route extends React.Component {
       aggregatedCards[requiredCards[i].color] += 1;
     }
 
-    let hand = this.props.players[this.props.activePlayerId].trainCards;
     for (let card of Object.keys(aggregatedCards)) {
-      if (hand[card] < aggregatedCards[card]) {
-        return false;
+      if (this.props.hand.trainCards[card] >= aggregatedCards[card]) {
+        return Array(aggregatedCards[card]).fill(card);
       }
     }
 
-    return true;
+    return null;
   }
 
   render() {
     return (
       <div className="route">
         { this.props.route.trainSpots.map((x, id) => {
-          return <TrainSpot occupiedByPlayerId = {this.props.route.occupiedByPlayerId} key={id} top={x.y} left={x.x} angle={x.angle} color={x.color} claimRoute={() => this.claimRoute()}></TrainSpot>
+          return <TrainSpot routeId={this.props.route.routeId} occupiedByPlayerId = {this.props.route.occupied} key={id} top={x.y} left={x.x} angle={x.angle} color={x.color} claimRoute={() => this.claimRoute()}></TrainSpot>
         })}
       </div>
     );
@@ -50,7 +53,7 @@ class Route extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    hand: state.reducers.hand,
+    hand: state.reducers.players[state.reducers.activePlayerId],
     activePlayerId: state.reducers.activePlayerId,
     players: state.reducers.players
   };

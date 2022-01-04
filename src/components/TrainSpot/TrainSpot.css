@@ -6,6 +6,7 @@
   background-color: red;
   width: 50px;
   height: 20px;
+  padding: 1px;
 }
 
 .train:hover {
@@ -52,8 +53,9 @@
 }
 
 .occupied {
-  height: 15px;
-  width: 40px;
+  height: 100%;
+  width: 100%;
   margin: auto;
   border-radius: 5px;
+  border: 1px solid white;
 }

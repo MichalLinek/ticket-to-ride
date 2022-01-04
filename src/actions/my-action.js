@@ -14,9 +14,9 @@ export const shuffleCards = (cards) => ({
   data: cards
 })
 
-export const takeCard = (cardId) => ({
+export const takeCard = (cardIds) => ({
   type: TAKE_CARD,
-  data: cardId
+  data: cardIds
 })
 
 export const takeRandomCards = () => ({

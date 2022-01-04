@@ -11,7 +11,7 @@ class TrainSpot extends React.Component {
   render() {
     return (
       <button onClick={() => this.props.claimRoute()} style={{ left: `${this.props.left}px`, top: `${this.props.top}px`, transform: `rotate(${this.props.angle}deg)` }}
-      className={this.cssClasses} >
+      className={this.cssClasses} routeId={`${this.props.routeId}`}>
          { this.props.occupiedByPlayerId >= 0 &&  <div className="occupied" style={{ backgroundColor: players[this.props.occupiedByPlayerId].color }}></div> }
       </button>
     );  

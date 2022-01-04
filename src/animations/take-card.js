@@ -1,4 +1,5 @@
 export function takeCardAnimation(cardId, cardName) {
+  console.log(cardId);
     let cardDiv = document.querySelectorAll(".available-card-row .card-image")[cardId];
     let boundary = cardDiv.getBoundingClientRect();
 
@@ -19,8 +20,8 @@ export function takeCardAnimation(cardId, cardName) {
       div.style.left = `${playerBoundary.x}px`;
       div.style.top = `${playerBoundary.y}px`;
       div.style.transform = "scale(1)";
-    }, 400)
+    }, 800)
     setTimeout(() => {  
       document.body.removeChild(div);
-    }, 1000);
+    }, 1500);
 }

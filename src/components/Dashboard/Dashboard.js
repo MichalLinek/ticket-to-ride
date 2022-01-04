@@ -2,9 +2,9 @@ import "./Dashboard.css";
 import React from 'react';
 import {connect} from 'react-redux'
 import ViewTickets from "../ViewTickets/ViewTickets";
-import { takeCardAnimation } from "../../animations/take-card";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { PlayerType } from "./../../models/const/player-type";
 
 class Dashboard extends React.Component {
   
@@ -28,14 +28,18 @@ class Dashboard extends React.Component {
       <div>
         <div className="player-cards">
           { Object.keys(this.props.hand).map(x => {
-            return <div key={x} className="card-row"><img className="card-image" src={`./${x}.png`}></img><div className="card-counter"> x {this.props.hand[x]}</div></div>
+            return <div key={x} className="card-row" card-type={`${x}`}>
+                <img className="card-image" src={`./${x}.png`}/>
+                <div className="card-counter"> x {this.props.isHumanPlayer ? this.props.hand[x]: '?'}
+                </div>
+              </div>
           })}
 
         <img onClick={() => this.showMineTickets()} className="card-image" src={"./ticket.png"}></img>
         <Modal show={this.state.showMyTickets} onHide={() => this.hideMineTickets()}>
           <Modal.Header>My Tickets</Modal.Header>
           <Modal.Body>
-            <ViewTickets ticketHand = {this.props.trainCards}></ViewTickets>
+            <ViewTickets trainCards = {this.props.trainCards}></ViewTickets>
           </Modal.Body>
           <Modal.Footer><button onClick={() => this.hideMineTickets()}>Cancel</button></Modal.Footer>
         </Modal>
@@ -48,7 +52,8 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => {
   return {
     hand: state.reducers.players[state.reducers.activePlayerId].trainCards,
-    trainCards: state.reducers.players[state.reducers.activePlayerId].ticketCards
+    trainCards: state.reducers.players[state.reducers.activePlayerId].ticketCards,
+    isHumanPlayer: state.reducers.players[state.reducers.activePlayerId].type === PlayerType.HUMAN
   };
 };
 export default connect(mapStateToProps)(Dashboard);

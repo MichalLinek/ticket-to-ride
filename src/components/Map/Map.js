@@ -1,7 +1,6 @@
 import "./Map.css";
 import Route from "../Route/Route";
 import City from "../City/City";
-
 import React from 'react';
 
 class Map extends React.Component {

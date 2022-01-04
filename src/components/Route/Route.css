@@ -13,3 +13,7 @@
 .train-spot:hover {
   border-color: white;
 }
+
+.hide-children * {
+  display: none;
+}

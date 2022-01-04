@@ -6,23 +6,43 @@ import * as actions from "./../../actions/my-action";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ChooseTickets from "../ChooseTickets/ChooseTickets";
-import ViewTickets from "../ViewTickets/ViewTickets";
-import { takeCardAnimation } from "../../animations/take-card";
 import { PlayerType } from "../../models/const/player-type";
+import { CardEnum } from "../../models/const/card-enum";
 
 class AvailableCards extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      showMyTickets: false,
       selected: [false, false, false],
-      isActive: false
+      firstCardId: null
     }
   }
+
   takeCard = (id) => {
-    if (this.props.players[this.props.activePlayerId].type === PlayerType.HUMAN)
-      store.dispatch(actions.takeCard(id));
+    if (this.props.players[this.props.activePlayerId].type === PlayerType.HUMAN) {
+      if (id === this.state.firstCardId) {
+        this.setState({firstCardId: null});
+        return;
+      }
+
+    
+      if (this.state.firstCardId !== null && this.props.cards[id] !== CardEnum.LOCOMOTIVE) {
+        let cardIds = [id, this.state.firstCardId];
+        store.dispatch(actions.takeCard(cardIds));
+        this.setState({firstCardId: null});
+      }
+      else if (this.state.firstCardId !== null && this.props.cards[id] === CardEnum.LOCOMOTIVE) {
+        return;
+      }
+      else if (this.state.firstCardId === null && this.props.cards[id] === CardEnum.LOCOMOTIVE) {
+        store.dispatch(actions.takeCard([id]));
+        this.setState({firstCardId: null});
+      }
+      else { 
+        this.setState({firstCardId: id});
+      }
+    }
   }
 
   takeRandomCards = () => {
@@ -51,14 +71,6 @@ class AvailableCards extends React.Component {
     this.setState({ showModal: false});
   };
 
-  showMineTickets = () => {
-    this.setState({ showMyTickets: true});
-  };
-
-  hideMineTickets = () => {
-    this.setState({ showMyTickets: false});
-  };
-
   selectTicket = (id) => {
     let stateSelected = [...this.state.selected]
     stateSelected[id] = !stateSelected[id]
@@ -68,22 +80,24 @@ class AvailableCards extends React.Component {
   render() {
     return (
       <div>
-        <div className="two-columns">
-          <div className="available-cards">
-            { this.props.cards.slice(0, 5).map((x, id) => {
-              return (
-                <div key={id} className="available-card-row">
-                  <img onClick={() => this.takeCard(id)} className="card-image" src={`./${x}.png`}></img>
-                </div>);
-            })}
-          <div><img onClick={() => this.takeRandomCards()} className="card-image random-deck" src={"./card-reverse.png"}></img></div>
-            <div><img onClick={() => this.show()} className="card-image" src={"./ticket.png"}></img></div>
-
+        <div className="available-cards">
+          { this.props.cards.slice(0, 5).map((x, id) => {
+            return (
+              <div key={id} className="available-card-row">
+                <div className={this.state.firstCardId === id ? 'card-picked card-selector': 'card-selector'}></div>
+                <img onClick={() => this.takeCard(id)} className='card-image' src={`./${x}.png`}></img>
+              </div>);
+          })}
+        <div className="available-card-row">
+          <div className='card-selector'></div>
+          <img onClick={() => this.takeRandomCards()} className="card-image random-deck" src={"./card-reverse.png"}></img>
+        </div >
+          <div className="available-card-row">
+            <div className='card-selector'></div>
+            <img onClick={() => this.show()} className="card-image tickets-deck" src={"./ticket.png"}></img>
           </div>
         </div>
-        <div>
-          
-
+      <div>
         </div>
         <Modal backdrop="static" show={this.state.showModal} onHide={() => this.hide()}>
           <Modal.Header>Choose at least one Ticket</Modal.Header>
@@ -101,7 +115,6 @@ const mapStateToProps = state => {
   return {
     cards: state.reducers.trainDeck,
     tickets: state.reducers.tickets,
-    ticketHand: state.reducers.ticketHand,
     activePlayerId: state.reducers.activePlayerId,
     players: state.reducers.players
   };
